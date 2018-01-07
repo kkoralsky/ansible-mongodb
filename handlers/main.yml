@@ -1,0 +1,4 @@
+---
+- name: mongodb restart
+  shell: 'pkill {{ mongodb_daemon }}; sleep 2s; {{ mongodb_daemon }} --config {{ mongodb_conf }} --fork' 
+  ignore_errors: yes

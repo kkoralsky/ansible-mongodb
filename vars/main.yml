@@ -1,0 +1,58 @@
+---
+_v2_dists:
+  Ubuntu: ubuntu-upstart
+  Debian: debian-sysvinit
+
+_v3_sections:
+  Ubuntu: multiverse
+  Debian: main
+
+_distro_lower: '{{ ansible_distribution.lower() }}'
+_mongodb_version_str: '{{ mongodb_version|string }}'
+mongodb_version_major: 'v{{ _mongodb_version_str.split(".")[:2]|join(".") }}'
+mongodb_version_milestone: '{{ mongodb_version_major[1:2] }}'
+
+mongodb_version_map:
+  v2.4:
+    repository: 'deb http://downloads-distro.mongodb.org/repo/{{ _v2_dists[ansible_distribution] }} dist 10gen'
+    package: mongodb-10gen
+    apt_key: 7F0CEB10 
+    daemon: mongodb
+    config_file: mongodb.conf
+    distros: [stretch, wheezy, jessie, precise, trusty, xenial]
+  v2.6:
+    repository: 'deb http://downloads-distro.mongodb.org/repo/{{ _v2_dists[ansible_distribution] }} dist 10gen'
+    package: mongodb-org
+    apt_key: 7F0CEB10
+    daemon: mongod
+    config_file: mongod.conf
+    distros: [stretch, wheezy, jessie, precise, trusty, xenial]
+  v3.0:
+    repository: 'deb http://repo.mongodb.org/apt/{{ _distro_lower }} {{ ansible_distribution_release }}/mongodb-org/3.0 {{ _v3_sections[ansible_distribution] }}'
+    package: mongodb-org
+    apt_key: 7F0CEB10
+    daemon: mongod
+    config_file: mongod.conf
+    distros: [wheezy, precise, trusty, xenial]
+  v3.2:
+    repository: 'deb http://repo.mongodb.org/apt/{{ _distro_lower }} {{ ansible_distribution_release }}/mongodb-org/3.2 {{ _v3_sections[ansible_distribution] }}'
+    package: mongodb-org
+    apt_key: EA312927
+    daemon: mongod
+    config_file: mongod.conf
+    distros: [wheezy, jessie, precise, trusty, xenial]
+  v3.4:
+    repository: 'deb http://repo.mongodb.org/apt/{{ _distro_lower }} {{ ansible_distribution_release }}/mongodb-org/3.4 {{ _v3_sections[ansible_distribution] }}' 
+    package: mongodb-org
+    apt_key: 0C49F3730359A14518585931BC711F9BA15703C6
+    daemon: mongod
+    config_file: mongod.conf
+    distros: [wheezy, jessie, precise, trusty, xenial]
+  v3.6:
+    repository: 'deb http://repo.mongodb.org/apt/{{ _distro_lower }} {{ ansible_distribution_release }}/mongodb-org/3.6 {{ _v3_sections[ansible_distribution] }}' 
+    apt_key: 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5
+    package: mongodb-org
+    daemon: mongod
+    config_file: mongod.conf
+    distros: [wheezy, jessie, precise, xenial, trusty]
+

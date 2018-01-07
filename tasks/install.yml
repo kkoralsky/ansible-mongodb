@@ -1,0 +1,21 @@
+---
+- name: install OS mongodb
+  apt: pkg='mongodb={{ mongodb_version }}*'
+  when: mongodb_install_os
+
+- block:
+  - name: validate distribution - mongo version availability
+    fail: 'This {{ mongodb_version }} version is not available in {{ ansible_distribution_release }}'
+    when: ansible_distribution_release not in mongodb_version_map[mongodb_version_major].distros
+
+  - name: ensure GPG utility is installed
+    apt: pkg=gnupg state=present
+  - name: add APT key 
+    apt_key: keyserver=keyserver.ubuntu.com id='{{ mongodb_version_map[mongodb_version_major].apt_key }}'
+  - name: add APT repository
+    apt_repository: repo="{{mongodb_version_map[mongodb_version_major].repository}}"
+  - name: install mongodb package
+    apt: pkg='{{ mongodb_version_map[mongodb_version_major].package }}={{ mongodb_version }}*'
+  when: not mongodb_install_os
+
+

@@ -1,0 +1,29 @@
+# {{ ansible_managed }}
+
+storage:
+  dbPath: {{ mongodb_conf_dbpath }}
+  journal:
+    enabled: {{ mongodb_conf_journal|to_nice_json|bool|lower }}
+
+systemLog:
+{% if mongodb_conf_logpath == '' %}
+  destination: syslog
+{% else %}
+  destination: file
+  path: {{ mongodb_conf_logpath }}
+{% endif %}
+  logAppend: {{ mongodb_conf_logappend|to_nice_json|bool|lower }}
+  logRotate: reopen
+
+processManagement:
+  fork: {{ mongodb_conf_fork|to_nice_json|bool|lower }}
+
+net:
+  bindIp: {{ mongodb_conf_bind_ip }}
+  port: {{ mongodb_conf_port|int }}
+  maxIncomingConnections: {{ mongodb_conf_maxConns|int }}
+  ipv6: {{ mongodb_conf_ipv6|to_nice_json|bool|lower }}
+
+
+security:
+  authorization: {% if mongodb_conf_auth %}"enabled"{% else %}"disabled"{% endif %}

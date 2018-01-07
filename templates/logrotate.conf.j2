@@ -1,0 +1,7 @@
+# {{ ansible_managed }}
+
+{{ mongodb_conf_logpath }} {
+{% for option in mongodb_logrotate_options %}
+    {{ option }}
+{% endfor %}
+}

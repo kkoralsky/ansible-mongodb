@@ -1,0 +1,16 @@
+---
+- include: install.yml
+  when: mongodb_install
+
+- name: ensure data dir is created
+  file: name='{{ mongodb_conf_dbpath }}' state=directory
+
+- name: configure mongo
+  template:
+    src: '{{ mongodb_conf_tpl }}'
+    dest: '{{ mongodb_conf }}'
+  notify: mongodb restart
+
+- name: configure log rotation
+  template: src=logrotate.conf.j2 dest=/etc/logrotate.d/mongodb.conf
+  when: mongodb_logrotate
