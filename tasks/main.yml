@@ -1,6 +1,7 @@
 ---
 - include_tasks: install.yml
   when: mongodb_install
+  tags: mongodb_install
 
 - name: ensure data dir is created
   file: name='{{ mongodb_conf_dbpath }}' state=directory
