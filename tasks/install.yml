@@ -1,6 +1,6 @@
 ---
 - name: install OS mongodb
-  apt: pkg='mongodb={{ mongodb_version }}*'
+  apt: pkg=mongodb
   when: mongodb_install_os
 
 - block:
