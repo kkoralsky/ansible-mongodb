@@ -1,5 +1,5 @@
 ---
-- include: install.yml
+- include_tasks: install.yml
   when: mongodb_install
 
 - name: ensure data dir is created
