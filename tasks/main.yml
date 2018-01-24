@@ -5,6 +5,7 @@
 
 - name: ensure data dir is created
   file: name='{{ mongodb_conf_dbpath }}' state=directory
+        owner=mongodb group=mongodb recurse=yes
 
 - name: configure mongo
   template:
@@ -15,3 +16,7 @@
 - name: configure log rotation
   template: src=logrotate.conf.j2 dest=/etc/logrotate.d/mongodb.conf
   when: mongodb_logrotate
+
+- name: ensure mongodb is started
+  service: name=mongodb state=started
+  when: mongodb_install_os
