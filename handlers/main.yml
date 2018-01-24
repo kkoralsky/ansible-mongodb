@@ -1,4 +1,12 @@
 ---
-- name: mongodb restart
+- name: mongodb manual restart
+  become: yes
+  become_user: mongodb
   shell: 'pkill {{ mongodb_daemon }}; sleep 2s; {{ mongodb_daemon }} --config {{ mongodb_conf }} --fork' 
   ignore_errors: yes
+  when: not mongodb_install_os
+  listen: mongodb restart
+- name: mongodb service restart
+  service: name=mongodb state=restarted
+  listen: mongodb restart
+  when: mongodb_install_os
